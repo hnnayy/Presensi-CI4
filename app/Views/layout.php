@@ -5,8 +5,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon" />
-    <title>Blank Page | PlainAdmin Demo</title>
+    <link rel="shortcut icon" href="assets/images/icon.jpg" type="image/x-icon" />
+    <title>Memancing Shincan</title>
 
     <!-- ========== All CSS files linkup ========= -->
     <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>" />
@@ -33,6 +33,7 @@
             <a href="index.html">
                 <img style="width: 100%;" src="assets/images/logo/sinchan.png" alt="logo" />
             </a>
+            D:\programming\BesokCumlaude\presensi-ci\public\assets\images\logo\sinchan.png
         </div>
         <nav class="sidebar-nav">
             <ul>
@@ -121,7 +122,7 @@
                                     <div class="profile-info">
                                         <div class="info">
                                             <div class="image">
-                                                <img src="assets/images/profile/profile-image.png" alt="" />
+                                                <img src="assets/images/profile/profil.jpg" alt="" />
                                             </div>
                                             <div>
                                                 <h6 class="fw-500">Pretty Girl</h6>
@@ -134,7 +135,7 @@
                                     <li>
                                         <div class="author-info flex items-center !p-1">
                                             <div class="image">
-                                                <img src="assets/images/profile/profile-image.png" alt="image">
+                                                <img src="assets/images/profile/profil.jpg" alt="image">
                                             </div>
                                             <div class="content">
                                                 <h4 class="text-sm">Pretty Girl</h4>
