@@ -9,6 +9,16 @@ class Login extends BaseController
 {
     public function index()
     {
+        $data = [
+            'validation' => \Config\Services::validation()
+        ];
         return view('login');
     }
+
+    public function login_action()
+    {
+        
+    }
+
+
 }
