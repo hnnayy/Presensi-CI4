@@ -52,14 +52,44 @@
     button:hover {
       background-color: #6c46b7;
     }
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      align-self: flex-start;
+    }
   </style>
 </head>
 <body>
   <main>
-    <form onsubmit="submitForm(event)">
+    <form method="POST" action="<?= base_url('login') ?>">
       <img id="bear-img" src="assets/images/bear/watch_bear_0.png" alt="Bear" />
-      <input id="username" type="text" placeholder="username" onfocus="onFocususername()" oninput="onusernameInput()" />
-      <input id="password" type="password" placeholder="Password" onfocus="onFocusPassword()" />
+      
+      <input 
+        id="username" 
+        name="username" 
+        type="text" 
+        placeholder="Username" 
+        required
+        onfocus="onFocususername()" 
+        oninput="onusernameInput()" 
+        value="<?= old('username') ?>" 
+      />
+      <?php if(isset($validation)): ?>
+        <div class="error"><?= $validation->getError('username') ?></div>
+      <?php endif; ?>
+
+      <input 
+        id="password" 
+        name="password" 
+        type="password" 
+        placeholder="Password" 
+        required 
+        onfocus="onFocusPassword()" 
+      />
+      <?php if(isset($validation)): ?>
+        <div class="error"><?= $validation->getError('password') ?></div>
+      <?php endif; ?>
+
       <button type="submit">Log In</button>
     </form>
   </main>
@@ -68,12 +98,10 @@
     const watchBearImgs = [];
     const hideBearImgs = [];
 
-    // Load all 21 watch bear images
     for (let i = 0; i <= 20; i++) {
       watchBearImgs.push(`assets/images/bear/watch_bear_${i}.png`);
     }
 
-    // Load 6 hide bear images
     for (let i = 0; i <= 5; i++) {
       hideBearImgs.push(`assets/images/bear/hide_bear_${i}.png`);
     }
@@ -87,7 +115,7 @@
 
     function onusernameInput() {
       const length = usernameInput.value.length;
-      const maxChars = 30; // Sesuaikan ini jika mau lebih/kurang sensitif
+      const maxChars = 30;
       const index = Math.min(Math.floor((length / maxChars) * watchBearImgs.length), watchBearImgs.length - 1);
       bearImg.src = watchBearImgs[index];
     }
@@ -100,8 +128,6 @@
         if (i >= hideBearImgs.length) clearInterval(interval);
       }, 50);
     }
-
-   
   </script>
 </body>
 </html>
