@@ -42,25 +42,52 @@
       border: 1px solid #ccc;
     }
     button {
-      background-color: #845ec2;
-      color: white;
+      background-color: #cce38c;
+      color: #af7a3b;
       border: none;
       font-weight: bold;
       cursor: pointer;
       transition: background 0.3s;
     }
     button:hover {
-      background-color: #6c46b7;
+      background-color: #af7a3b;
+      color: #cce38c;
+
     }
     .error {
       color: red;
       font-size: 0.9rem;
       align-self: flex-start;
     }
+    .alert {
+      background-color: #ffdddd;
+      color: #d8000c;
+      border: 1px solid #f5c6cb;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      width: 100%;
+      text-align: center;
+      animation: fadein 0.5s;
+    }
+
+    @keyframes fadein {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
   </style>
 </head>
 <body>
   <main>
+    <?php if(session()->getFlashdata('pesan')): ?>
+      <div class="alert">
+        <?= session()->getFlashdata('pesan') ?>
+      </div>
+    <?php endif; ?>
+
+    
+
     <form method="POST" action="<?= base_url('login') ?>">
       <img id="bear-img" src="assets/images/bear/watch_bear_0.png" alt="Bear" />
       
