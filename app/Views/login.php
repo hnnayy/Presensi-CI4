@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login Bear</title>
+  <link rel="shortcut icon" href="assets/images/icon.jpg" type="image/x-icon" />
+  <title>Memancing Shincan</title>  
   <style>
     * {
       box-sizing: border-box;

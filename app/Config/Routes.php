@@ -7,5 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Login::index');
 $routes->post('login', 'Login::login_action');
-$routes->get('Admin/Home', 'Admin\Home::index');
-$routes->get('mentalSupport/Home', 'mentalSupport\Home::index');
+$routes->get('logout', 'Login::logout');
+
+$routes->get('Admin/Home', 'Admin\Home::index', ['filter'=> 'AdminFilters']);
+$routes->get('mentalSupport/Home', 'mentalSupport\Home::index', ['filter'=> 'mentalSupportFilters']);

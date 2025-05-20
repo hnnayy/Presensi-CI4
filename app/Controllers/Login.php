@@ -37,6 +37,13 @@ class Login extends BaseController
                 $cek_password = password_verify($password, $password_db);
 
                 if ($cek_password) {
+
+                    $session_data =[
+                        'logged_in' => TRUE,
+                        'role_id' => $cekusername['role']
+                    ];
+                    $session -> set($session_data);
+
                     switch($cekusername['role']){
                         case 'Admin':
                             return redirect()->to('Admin/Home');
@@ -62,8 +69,14 @@ class Login extends BaseController
                 $data = [
                     'validation' => \Config\Services::validation()
                 ];
-                return view('login', $data);
+                return view('login', data: $data);
             }
         }
+    }
+
+    public function logout(){
+        $session =session();
+        $session->destroy(); //destroy history login jd gabisa masuk lagi tnp login
+        return view('login');
     }
 }
