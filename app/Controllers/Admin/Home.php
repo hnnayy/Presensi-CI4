@@ -9,7 +9,10 @@ class Home extends BaseController
 {
     public function index()
     {
-        echo 'admin';
-        echo session()->get('role_id');
+        $data = [
+            'title' => 'Home'
+        ];
+
+        return view('Admin/Home', $data);
     }
 }
