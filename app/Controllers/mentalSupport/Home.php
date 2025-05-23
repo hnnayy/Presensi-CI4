@@ -9,6 +9,10 @@ class Home extends BaseController
 {
     public function index()
     {
-        echo "halaman mental support";
+         $data = [
+            'title' => 'Home'
+        ];
+
+        return view('mentalSupport/Home', $data);
     }
 }

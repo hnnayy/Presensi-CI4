@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/materialdesignicons.min.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/fullcalendar.css') ?>" />
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css') ?>" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 
     <!-- Tabler Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" rel="stylesheet">
