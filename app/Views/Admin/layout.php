@@ -17,6 +17,9 @@
     <!-- Tabler Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.28.1/tabler-icons.min.css" rel="stylesheet">
 
+    <!-- data tables -->
+     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.css" />
+
     <style>
     .profile-picture {
     width: 50px;            /* Bisa disesuaikan */
@@ -252,6 +255,32 @@
     <script src="<?= base_url('assets/js/world-merc.js') ?>"></script>
     <script src="<?= base_url('assets/js/polyfill.js') ?>"></script>
     <script src="<?= base_url('assets/js/main.js') ?>"></script>
+
+    <!-- jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.js"></script>
+
+    <script>
+        $(document).ready( function () {
+    $('#dataTable').DataTable();
+} );
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                // Munculkan konfirmasi
+                const confirmed = confirm('Apakah kamu yakin ingin menghapus data ini?');
+                if (!confirmed) {
+                    event.preventDefault(); // batalkan aksi jika tidak yakin
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 
 </html>
