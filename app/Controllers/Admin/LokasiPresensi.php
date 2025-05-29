@@ -7,6 +7,41 @@ use App\Models\LokasiPresensiModel;
 
 class LokasiPresensi extends BaseController
 {
+    private function getCoordinates($address)
+    {
+        $apiKey = 'YOUR_API_KEY'; // Ganti dengan API key Anda
+        $url = 'https://geocode.maps.co/search?q=' . urlencode($address) . '&api_key=' . $apiKey;
+
+        $response = file_get_contents($url);
+        $data = json_decode($response, true);
+
+        if (!empty($data)) {
+            return [
+                'latitude' => $data[0]['lat'],
+                'longitude' => $data[0]['lon']
+            ];
+        }
+
+        return null;
+    }
+
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371;
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+             sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $distance = $earthRadius * $c;
+
+        return $distance;
+    }
+
     public function index()
     {
         $lokasiPresensiModel = new LokasiPresensiModel();
@@ -31,68 +66,49 @@ class LokasiPresensi extends BaseController
     {
         $lokasiPresensiModel = new LokasiPresensiModel();
 
-        // Validasi input
         $validation = \Config\Services::validation();
         $rules = [
-            'alamat_lokasi' => 'required|min_length[3]'
+            'nama_lokasi' => 'required',
+            'alamat_lokasi' => 'required|min_length[3]',
+            'tipe_lokasi' => 'required',
+            'zona_waktu' => 'required',
+            'jam_masuk' => 'required',
+            'jam_pulang' => 'required'
         ];
 
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('validation', $validation);
         }
 
-        // Simpan ke database
-        $lokasiPresensiModel->insert([
-            'alamat_lokasi' => $this->request->getPost('alamat_lokasi'),
-            'tipe_lokasi'   => $this->request->getPost('tipe_lokasi'),
-            'latitude'      => $this->request->getPost('latitude'),
-            'longitude'     => $this->request->getPost('longitude'),
-            'radius'        => $this->request->getPost('radius'),
-            'zona_waktu'    => $this->request->getPost('zona_waktu'),
-            'jam_masuk'     => $this->request->getPost('jam_masuk'),
-            'jam_pulang'    => $this->request->getPost('jam_pulang'),
-        ]);
+        $alamat = $this->request->getPost('alamat_lokasi');
+        $coordinates = $this->getCoordinates($alamat);
 
-        session()->setFlashdata('success', 'Data lokasi presensi berhasil ditambahkan.');
-        return redirect()->to(base_url('Admin/LokasiPresensi'));
-    }
+        if ($coordinates) {
+            $latitude = $coordinates['latitude'];
+            $longitude = $coordinates['longitude'];
 
-    public function edit($id)
-    {
-        $lokasiPresensiModel = new LokasiPresensiModel(); 
-        $data = [
-            'title' => 'Edit Lokasi Presensi',
-            'lokasi_presensi' => $lokasiPresensiModel->find($id),
-            'validation' => \Config\Services::validation()
-        ];
-        return view('Admin/LokasiPresensi/edit', $data);
-    }
+            $telkomLat = -6.9733;
+            $telkomLon = 107.6308;
+            $radius = $this->calculateDistance($latitude, $longitude, $telkomLat, $telkomLon);
 
-    public function update($id)
-    {
-        $lokasiPresensiModel = new LokasiPresensiModel();
+            $lokasiPresensiModel->insert([
+                'nama_lokasi' => $this->request->getPost('nama_lokasi'),
+                'alamat_lokasi' => $alamat,
+                'tipe_lokasi' => $this->request->getPost('tipe_lokasi'),
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'radius' => $radius,
+                'zona_waktu' => $this->request->getPost('zona_waktu'),
+                'jam_masuk' => $this->request->getPost('jam_masuk'),
+                'jam_pulang' => $this->request->getPost('jam_pulang'),
+            ]);
 
-        $rules = [
-            'alamat_lokasi' => 'required|min_length[3]'
-        ];
-
-        if (!$this->validate($rules)) {
-            return redirect()->back()->withInput()->with('validation', \Config\Services::validation());
+            session()->setFlashdata('success', 'Data lokasi presensi berhasil ditambahkan.');
+            return redirect()->to(base_url('Admin/LokasiPresensi'));
+        } else {
+            session()->setFlashdata('error', 'Gagal mendapatkan koordinat dari alamat yang diberikan.');
+            return redirect()->back()->withInput();
         }
-
-        $lokasiPresensiModel->update($id, [
-            'alamat_lokasi' => $this->request->getPost('alamat_lokasi'),
-            'tipe_lokasi'   => $this->request->getPost('tipe_lokasi'),
-            'latitude'      => $this->request->getPost('latitude'),
-            'longitude'     => $this->request->getPost('longitude'),
-            'radius'        => $this->request->getPost('radius'),
-            'zona_waktu'    => $this->request->getPost('zona_waktu'),
-            'jam_masuk'     => $this->request->getPost('jam_masuk'),
-            'jam_pulang'    => $this->request->getPost('jam_pulang'),
-        ]);
-
-        session()->setFlashdata('success', 'Data lokasi presensi berhasil diperbarui.');
-        return redirect()->to(base_url('Admin/LokasiPresensi'));
     }
 
     public function delete($id)

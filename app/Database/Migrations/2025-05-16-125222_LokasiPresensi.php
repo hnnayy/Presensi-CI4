@@ -15,6 +15,10 @@ class LokasiPresensi extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
+            'nama_lokasi' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '255',
+            ],
             'alamat_lokasi' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',

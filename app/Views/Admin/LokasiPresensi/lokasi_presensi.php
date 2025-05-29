@@ -89,14 +89,9 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Nama Lokasi</th>
                 <th>Alamat Lokasi</th>
                 <th>Tipe Lokasi</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Radius</th>
-                <th>Zona Waktu</th>
-                <th>Jam Masuk</th>
-                <th>Jam Pulang</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -105,15 +100,14 @@
             <?php foreach ($lokasi_presensi as $lok): ?>
                 <tr>
                     <td><?= $no++ ?></td>
+                    <td><?= esc($lok['nama_lokasi']) ?></td>
                     <td><?= esc($lok['alamat_lokasi']) ?></td>
                     <td><?= esc($lok['tipe_lokasi']) ?></td>
-                    <td><?= esc($lok['latitude']) ?></td>
-                    <td><?= esc($lok['longitude']) ?></td>
-                    <td><?= esc($lok['radius']) ?> meter</td>
-                    <td><?= esc($lok['zona_waktu']) ?></td>
-                    <td><?= esc($lok['jam_masuk']) ?></td>
-                    <td><?= esc($lok['jam_pulang']) ?></td>
+  
                     <td>
+                        <a href="<?= base_url('Admin/LokasiPresensi/Detail/' . $lok['id']) ?>" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> Detail
+                        </a>
                         <a href="<?= base_url('Admin/LokasiPresensi/Edit/' . $lok['id']) ?>" class="btn btn-sm btn-warning">
                             <i class="fas fa-edit"></i> Edit
                         </a>

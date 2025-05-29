@@ -91,7 +91,6 @@
 
     <form method="POST" action="<?= base_url('login') ?>">
       <img id="bear-img" src="assets/images/bear/watch_bear_0.png" alt="Bear" />
-      
       <input 
         id="username" 
         name="username" 
