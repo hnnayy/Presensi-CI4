@@ -18,6 +18,7 @@ $routes->get('Admin/Jabatan/Edit/(:segment)', 'Admin\Jabatan::edit/$1', ['filter
 $routes->post('Admin/Jabatan/Update/(:segment)', 'Admin\Jabatan::update/$1', ['filter' => 'AdminFilters']);
 $routes->get('Admin/Jabatan/Delete/(:segment)', 'Admin\Jabatan::Delete/$1', ['filter' => 'AdminFilters']);
 
+//routes jabatan
 $routes->get('Admin/LokasiPresensi', 'Admin\LokasiPresensi::index', ['filter' => 'AdminFilters']);
 $routes->get('Admin/LokasiPresensi/Create', 'Admin\LokasiPresensi::create', ['filter' => 'AdminFilters']);
 $routes->post('Admin/LokasiPresensi/Store', 'Admin\LokasiPresensi::store', ['filter' => 'AdminFilters']);
