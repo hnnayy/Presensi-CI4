@@ -1,61 +1,86 @@
 <?= $this->extend('Admin/layout.php') ?>
 <?= $this->section('content') ?>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
-    .table-wrapper {
-        max-width: 1000px;
+    .form-container {
+        max-width: 800px;
         margin: 0 auto;
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .cardd {
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 0;
+    .form-header {
+        border-bottom: 2px solid #1f6186;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .form-header h2 {
+        color: #1f6186;
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .form-group {
         margin-bottom: 20px;
-        background-color: #fff;
-        overflow: hidden;
-        transition: all 0.3s ease;
     }
 
-    .cardd-header {
-        background-color: #1f6186;
-        color: white;
-        font-weight: bold;
-        font-size: 1.2rem;
-        padding: 12px 16px;
-        border-bottom: 1px solid #ccc;
-        text-align: center;
-    }
-
-    .cardd-body {
-        padding: 20px;
-        background-color: #f8f9fa;
-    }
-
-    .input-style-1 {
-        margin-bottom: 15px;
-    }
-
-    .input-style-1 label {
+    .form-group label {
         display: block;
-        margin-bottom: 5px;
-        font-weight: 500;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
     }
 
-    .input-style-1 input {
+    .form-group .required {
+        color: #e74c3c;
+    }
+
+    .form-control {
         width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        padding: 12px 15px;
+        border: 2px solid #e1e8ed;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #1f6186;
+        box-shadow: 0 0 0 3px rgba(31, 97, 134, 0.1);
+    }
+
+    .form-control.is-invalid {
+        border-color: #e74c3c;
+    }
+
+    .invalid-feedback {
+        display: block;
+        color: #e74c3c;
+        font-size: 12px;
+        margin-top: 5px;
     }
 
     .btn {
-        padding: 8px 16px;
-        font-size: 1rem;
+        font-size: 14px;
+        padding: 12px 24px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
         border: none;
-        border-radius: 5px;
         cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
     }
 
     .btn-primary {
@@ -65,41 +90,228 @@
 
     .btn-primary:hover {
         background-color: #154360;
-        color: white;
+        transform: translateY(-1px);
     }
 
-    .btn-cancel {
+    .btn-secondary {
         background-color: #6c757d;
         color: white;
-        margin-left: 10px;
     }
 
-    .btn-cancel:hover {
+    .btn-secondary:hover {
         background-color: #5a6268;
         color: white;
-    
+        text-decoration: none;
     }
 
-    .mt-2 {
-        margin-top: 10px;
+    .form-actions {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e1e8ed;
+        display: flex;
+        gap: 15px;
+        justify-content: flex-start;
+    }
+
+    .alert {
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            margin: 10px;
+            padding: 20px;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 
-<div class="cardd table-wrapper">
-    <div class="cardd-header">
-        Tambah Jabatan
+<div class="form-container">
+    <div class="form-header">
+        <h2><i class="fas fa-user-tie"></i> Tambah Jabatan</h2>
     </div>
-    <div class="cardd-body">
-        <form method="POST" action="<?= base_url('Admin/Jabatan/Store') ?>">
-            <?= csrf_field() ?>
-            <div class="input-style-1">
-                <label>Nama Jabatan</label>
-                <input type="text" name="jabatan" placeholder="Masukkan nama jabatan" required />
-            </div>
-            <button type="submit" class="btn btn-primary mt-2">Simpan</button>
-            <a href="<?= base_url('Admin/Jabatan') ?>" class="btn btn-cancel mt-2">Cancel</a>
-        </form>
-    </div>
+
+    <?php if (session()->getFlashdata('error')) : ?>
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            <?= session()->getFlashdata('error') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <?= session()->getFlashdata('success') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($validation) && $validation->getErrors()) : ?>
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Terjadi kesalahan:</strong>
+            <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                <?php foreach ($validation->getErrors() as $error) : ?>
+                    <li><?= esc($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+
+    <form action="<?= base_url('Admin/Jabatan/Store') ?>" method="post" id="formJabatan">
+        <?= csrf_field() ?>
+
+        <div class="form-group">
+            <label for="jabatan">
+                Nama Jabatan <span class="required">*</span>
+            </label>
+            <input 
+                type="text" 
+                class="form-control <?= (isset($validation) && $validation->hasError('jabatan')) ? 'is-invalid' : '' ?>"
+                id="jabatan" 
+                name="jabatan" 
+                value="<?= old('jabatan') ?>"
+                placeholder="Masukkan nama jabatan"
+                maxlength="100"
+                required
+            >
+            <?php if (isset($validation) && $validation->hasError('jabatan')) : ?>
+                <div class="invalid-feedback">
+                    <?= $validation->getError('jabatan') ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="form-group">
+            <label for="deskripsi">
+                Deskripsi Jabatan
+            </label>
+            <textarea 
+                class="form-control <?= (isset($validation) && $validation->hasError('deskripsi')) ? 'is-invalid' : '' ?>"
+                id="deskripsi" 
+                name="deskripsi" 
+                rows="3"
+                placeholder="Masukkan deskripsi jabatan (opsional)"
+                maxlength="500"
+            ><?= old('deskripsi') ?></textarea>
+            <?php if (isset($validation) && $validation->hasError('deskripsi')) : ?>
+                <div class="invalid-feedback">
+                    <?= $validation->getError('deskripsi') ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="form-group">
+            <label for="level">
+                Level Jabatan
+            </label>
+            <select 
+                class="form-control <?= (isset($validation) && $validation->hasError('level')) ? 'is-invalid' : '' ?>"
+                id="level" 
+                name="level"
+            >
+                <option value="">-- Pilih Level Jabatan --</option>
+                <option value="1" <?= old('level') == '1' ? 'selected' : '' ?>>Level 1 - Direktur</option>
+                <option value="2" <?= old('level') == '2' ? 'selected' : '' ?>>Level 2 - Manager</option>
+                <option value="3" <?= old('level') == '3' ? 'selected' : '' ?>>Level 3 - Supervisor</option>
+                <option value="4" <?= old('level') == '4' ? 'selected' : '' ?>>Level 4 - Staff Senior</option>
+                <option value="5" <?= old('level') == '5' ? 'selected' : '' ?>>Level 5 - Staff</option>
+            </select>
+            <?php if (isset($validation) && $validation->hasError('level')) : ?>
+                <div class="invalid-feedback">
+                    <?= $validation->getError('level') ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btnSubmit">
+                <i class="fas fa-save"></i>
+                Simpan Data
+            </button>
+            <a href="<?= base_url('Admin/Jabatan') ?>" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Kembali
+            </a>
+        </div>
+    </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formJabatan');
+    const submitBtn = document.getElementById('btnSubmit');
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        const jabatan = document.getElementById('jabatan');
+        
+        // Check required field
+        if (!jabatan.value.trim()) {
+            isValid = false;
+            jabatan.classList.add('is-invalid');
+        } else {
+            jabatan.classList.remove('is-invalid');
+        }
+        
+        // Check minimum length
+        if (jabatan.value.trim().length < 3) {
+            alert('Nama jabatan minimal 3 karakter!');
+            jabatan.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Mohon lengkapi semua field yang required!');
+            return false;
+        }
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+    });
+    
+    // Reset invalid state on input
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            this.classList.remove('is-invalid');
+        });
+    });
+    
+    // Auto capitalize first letter of jabatan
+    const jabatanInput = document.getElementById('jabatan');
+    jabatanInput.addEventListener('input', function() {
+        let value = this.value;
+        if (value.length > 0) {
+            this.value = value.charAt(0).toUpperCase() + value.slice(1);
+        }
+    });
+});
+</script>
 
 <?= $this->endSection() ?>
